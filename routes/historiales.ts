@@ -82,6 +82,14 @@ router.post('/:id', async (req:Request, res:Response) => {
             res.status(404).json({msg:"CLIENTE_NO_ENCONTRADO"});
             return;
         };
+        
+        const checaHistorial = await Historial.findOne({
+            cliente:cliente._id,
+        });
+        if(checaHistorial){  
+            res.status(200).json({msg:"HISTORIAL_YA_EXISTE"});
+            return;
+        }
         const historial = new Historial({
             cliente:cliente._id,
         })
