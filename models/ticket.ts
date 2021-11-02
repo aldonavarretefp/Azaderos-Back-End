@@ -14,6 +14,7 @@ const ticketSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Articulo'
         }],
+        default:[]
     },
     total:{
         type:Number,
