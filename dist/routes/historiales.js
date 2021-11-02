@@ -129,11 +129,11 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); });
 router.post('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, cliente, historial, error_2;
+    var id, cliente, checaHistorial, historial, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 4, , 5]);
                 id = req.params.id;
                 return [4 /*yield*/, cliente_1.default.findById({
                         _id: id,
@@ -146,20 +146,29 @@ router.post('/:id', function (req, res) { return __awaiter(void 0, void 0, void 
                     return [2 /*return*/];
                 }
                 ;
+                return [4 /*yield*/, historiale_1.default.findOne({
+                        cliente: cliente._id,
+                    })];
+            case 2:
+                checaHistorial = _a.sent();
+                if (checaHistorial) {
+                    res.status(200).json({ msg: "HISTORIAL_YA_EXISTE" });
+                    return [2 /*return*/];
+                }
                 historial = new historiale_1.default({
                     cliente: cliente._id,
                 });
                 return [4 /*yield*/, historial.save()];
-            case 2:
+            case 3:
                 _a.sent();
                 res.status(200).json(historial);
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 5];
+            case 4:
                 error_2 = _a.sent();
                 console.log(error_2);
                 res.status(500).json({ msg: "ERROR_SERVIDOR" });
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });

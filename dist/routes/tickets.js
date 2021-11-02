@@ -129,7 +129,7 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); });
-router.post('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, historial, ticket, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -162,29 +162,5 @@ router.post('/:id', function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); });
-// //Actualizando data
-// router.put('/:id',[
-//     check('id','ID_INVALIDO').isMongoId(),
-//     check('id').custom(existeUsuarioporId),
-//     check('rol').custom(esRoleValido),
-//     validarCampos
-// ],usuariosPut)
-// //Crear nuevos recursos
-// router.post('/',[
-//     body("correo","CORREO_INVALIDO").isEmail(),
-//     body("correo").custom(existeEmail),
-//     body("password","CONTRASENIA MAYOR A 6 CARACTERES").isLength({min:5})
-//     .matches(/\d/).withMessage("DEBE CONTENER UN NUMERO"),
-//     body("nombre","NOMBRE ES OBLIGATORIO").not().isEmpty(),
-//     body('rol').custom(esRoleValido),
-//     validarCampos
-// ],usuariosPost);
-// //Borrar, marcandolo nadamas
-// router.delete('/:id',[
-//     check('id','ID_INVALIDO').isMongoId(),
-//     check('id').custom(existeUsuarioporId),
-//     validarCampos
-// ], usuariosDelete)
-// router.patch('/', usuariosPatch);
 module.exports = router;
 //# sourceMappingURL=tickets.js.map
