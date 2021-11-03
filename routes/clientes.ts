@@ -1,7 +1,10 @@
 import {Router,Request,Response} from 'express';
 import {body,check} from 'express-validator';
 const router = Router();
+
+
 import Cliente from '../models/cliente';
+const {getClientes,getCliente, postCliente,putCliente, delCliente} = require('../controllers/clientes');
 // const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
 // const { esRoleValido, existeEmail, existeUsuarioporId } = require('../helpers/db-validators');
 // const { validarCampos } = require('../middlewares/validar-campos');
@@ -35,40 +38,23 @@ import Cliente from '../models/cliente';
 
 // router.patch('/', usuariosPatch);
 
-router.get('/', async (req:Request, res:Response) => {
-    const {limite = 5,desde = 0} = req.query;
-    const condition = {estado:true};
-    if (Number(desde)>=Number(limite)) {
-        res.json({msg:"SINTAXIS_INVALIDA"})
-        return
-    };
+router.get('/',getClientes);
 
-    const [clientes,total] = await Promise.all([
-        Cliente.find(condition)
-                .limit(Number(limite))
-                .skip(Number(desde)),
-        Cliente.countDocuments(condition)
-    ]);
-    res.status(200).json({
-        total,
-        clientes
-    });
-});
+router.get('/:id', getCliente);
 
-router.get('/:id', async (req:Request, res:Response) => {
-    try{
-    const {id} = req.params;
-    const cliente = await Cliente.findById(id);
-    if (!cliente) {
-        res.status(404).json({msg:"CLIENTE_NO_ENCONTRADO"});
-        return;
-    };
-    res.status(200).json(cliente);
-    }catch(error){
-        console.log(error);
-        res.status(500).json({msg:"ERROR_SERVIDOR"});
-    }
-});
+router.post('/',[
+    body('nombre','NOMBRE ES OBLIGATORIO').not().isEmpty(),
+    body('telefono','TELEFONO ES OBLIGATORIO').not().isEmpty(),
+    body('direccion','DIRECCION ES OBLIGATORIO').not().isEmpty(),
+],postCliente);
+
+router.put('/:id',[
+    check('id','ID_INVALIDO').isMongoId(),
+],putCliente);
+
+router.delete('/:id',[
+    check('id','ID_INVALIDO').isMongoId(),
+],delCliente);
 // //Actualizando data
 // router.put('/:id',[
 //     check('id','ID_INVALIDO').isMongoId(),

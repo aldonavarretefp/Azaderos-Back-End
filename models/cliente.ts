@@ -5,16 +5,16 @@ const clienteSchema = new Schema({
         type:String,
         required: [true,"Nombre obligatorio"]
     },
+    telefono: {
+        type:String,
+        required: [true,"Telefono obligatorio"]
+    },
     sobrenombre: {
         type:String
     },
     estado: {
         type: Boolean,
         default:true,
-    },
-    telefono: {
-        type:String,
-        required: [true,"Telefono obligatorio"]
     },
     direccion: {
         type:String,
