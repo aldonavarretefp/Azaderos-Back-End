@@ -40,10 +40,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
+var express_validator_1 = require("express-validator");
+var tickets_1 = require("../controllers/tickets");
+var db_validators_1 = require("../helpers/db-validators");
+var validar_campos_1 = __importDefault(require("../middlewares/validar-campos"));
 var router = (0, express_1.Router)();
 var cliente_1 = __importDefault(require("../models/cliente"));
-var historiale_1 = __importDefault(require("../models/historiale"));
-var ticket_1 = __importDefault(require("../models/ticket"));
 // const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
 // const { esRoleValido, existeEmail, existeUsuarioporId } = require('../helpers/db-validators');
 // const { validarCampos } = require('../middlewares/validar-campos');
@@ -74,35 +76,7 @@ var ticket_1 = __importDefault(require("../models/ticket"));
 //     validarCampos
 // ], usuariosDelete)
 // router.patch('/', usuariosPatch);
-router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, limite, _c, desde, condition, _d, historiales, total;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
-            case 0:
-                _a = req.query, _b = _a.limite, limite = _b === void 0 ? 5 : _b, _c = _a.desde, desde = _c === void 0 ? 0 : _c;
-                condition = { estado: true };
-                if (Number(desde) >= Number(limite)) {
-                    res.json({ msg: "SINTAXIS_INVALIDA" });
-                    return [2 /*return*/];
-                }
-                ;
-                return [4 /*yield*/, Promise.all([
-                        historiale_1.default.find(condition)
-                            .limit(Number(limite))
-                            .skip(Number(desde))
-                            .populate('cliente'),
-                        historiale_1.default.countDocuments(condition)
-                    ])];
-            case 1:
-                _d = _e.sent(), historiales = _d[0], total = _d[1];
-                res.status(200).json({
-                    total: total,
-                    historiales: historiales
-                });
-                return [2 /*return*/];
-        }
-    });
-}); });
+router.get('/', tickets_1.getTickets);
 router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, cliente, error_1;
     return __generator(this, function (_a) {
@@ -129,38 +103,10 @@ router.get('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); });
-router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, historial, ticket, error_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 3, , 4]);
-                id = req.params.id;
-                return [4 /*yield*/, historiale_1.default.findById({
-                        _id: id,
-                        estado: true
-                    })];
-            case 1:
-                historial = _a.sent();
-                if (!historial) {
-                    res.status(404).json({ msg: "HISTORIAL_NO_ENCONTRADO" });
-                    return [2 /*return*/];
-                }
-                ;
-                ticket = new ticket_1.default();
-                return [4 /*yield*/, ticket.save()];
-            case 2:
-                _a.sent();
-                res.status(200).json(ticket);
-                return [3 /*break*/, 4];
-            case 3:
-                error_2 = _a.sent();
-                console.log(error_2);
-                res.status(500).json({ msg: "ERROR_SERVIDOR" });
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); });
+router.post('/:id', [
+    (0, express_validator_1.check)('id', 'ID_INVALIDO').isMongoId(),
+    (0, express_validator_1.check)('id').custom(db_validators_1.existeHistorialporId),
+    validar_campos_1.default
+], tickets_1.createTicket);
 module.exports = router;
 //# sourceMappingURL=tickets.js.map

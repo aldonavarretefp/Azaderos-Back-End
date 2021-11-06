@@ -44,6 +44,9 @@ var clienteSchema = new mongoose_1.Schema({
     google: {
         type: Boolean,
         default: false,
+    },
+    ubicacion: {
+        type: String,
     }
 });
 clienteSchema.methods.toJSON = function () {

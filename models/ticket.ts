@@ -6,8 +6,9 @@ const ticketSchema = new Schema({
         type: Boolean,
         default:true,
     },
-    fecha:{
-        type:Date
+    createdAt:{
+        type:Date,
+        default:Date.now()
     },
     articulos:{
         type: [{

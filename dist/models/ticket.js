@@ -17,8 +17,9 @@ var ticketSchema = new mongoose_1.Schema({
         type: Boolean,
         default: true,
     },
-    fecha: {
-        type: Date
+    createdAt: {
+        type: Date,
+        default: Date.now()
     },
     articulos: {
         type: [{

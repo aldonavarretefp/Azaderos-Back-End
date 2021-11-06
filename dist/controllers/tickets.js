@@ -39,74 +39,70 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var cors_1 = __importDefault(require("cors"));
-var connection_1 = __importDefault(require("../db/connection"));
-var express_fileupload_1 = __importDefault(require("express-fileupload"));
-var Server = /** @class */ (function () {
-    //Usualmente las propiedades se declaran en constructor
-    function Server() {
-        this.app = (0, express_1.default)();
-        this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
-        this.paths = {
-            auth: '/api/auth',
-            buscar: '/api/buscar',
-            categorias: '/api/categorias',
-            productos: '/api/productos',
-            usuarios: '/api/usuarios',
-            clientes: '/api/clientes',
-            historiales: '/api/historiales',
-            tickets: '/api/tickets',
-            uploads: '/api/uploads',
-        };
-        //Conectar a base de datos
-        this.conectarBaseDatos();
-        //Middlewares   
-        this.middlewares();
-        //Rutas de mi aplicacion
-        this.routes();
-    }
-    Server.prototype.conectarBaseDatos = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, connection_1.default)()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
+exports.createTicket = exports.getTickets = void 0;
+var ticket_1 = __importDefault(require("../models/ticket"));
+var historiale_1 = __importDefault(require("../models/historiale"));
+var getTickets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, limite, _c, desde, options, _d, tickets, total;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
+            case 0:
+                _a = req.query, _b = _a.limite, limite = _b === void 0 ? 5 : _b, _c = _a.desde, desde = _c === void 0 ? 0 : _c;
+                if (Number(desde) >= Number(limite)) {
+                    res.json({ msg: "SINTAXIS_INVALIDA" });
+                    return [2 /*return*/];
                 }
-            });
-        });
-    };
-    Server.prototype.middlewares = function () {
-        //CORS
-        this.app.use((0, cors_1.default)());
-        //Lectura y parseo del body
-        this.app.use(express_1.default.json());
-        //Directorio publico
-        this.app.use(express_1.default.static('public'));
-        //File upload
-        this.app.use((0, express_fileupload_1.default)({
-            useTempFiles: true,
-            tempFileDir: '/tmp/'
-        }));
-    };
-    Server.prototype.routes = function () {
-        //Configurando las rutas
-        this.app.use(this.usuariosPath, require("../routes/usuarios"));
-        this.app.use(this.paths.clientes, require("../routes/clientes"));
-        this.app.use(this.paths.historiales, require("../routes/historiales"));
-        this.app.use(this.paths.uploads, require("../routes/uploads"));
-        this.app.use(this.paths.tickets, require("../routes/tickets"));
-    };
-    Server.prototype.listen = function () {
-        var _this = this;
-        this.app.listen(this.port, function () {
-            console.log("Escuchando en http://localhost:" + _this.port);
-        });
-    };
-    return Server;
-}());
-exports.default = Server;
-//# sourceMappingURL=server.js.map
+                ;
+                options = {
+                    estado: true
+                };
+                return [4 /*yield*/, Promise.all([
+                        ticket_1.default.find(options).sort({ createdAt: -1 }),
+                        ticket_1.default.countDocuments(options)
+                    ])];
+            case 1:
+                _d = _e.sent(), tickets = _d[0], total = _d[1];
+                res.status(200).json({
+                    total: total,
+                    tickets: tickets
+                });
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.getTickets = getTickets;
+var createTicket = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, historial, ticket, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                id = req.params.id;
+                return [4 /*yield*/, historiale_1.default.findById({
+                        _id: id,
+                        estado: true
+                    })];
+            case 1:
+                historial = _a.sent();
+                if (!historial) {
+                    res.status(404).json({ msg: "HISTORIAL_NO_ENCONTRADO" });
+                    return [2 /*return*/];
+                }
+                ;
+                ticket = new ticket_1.default();
+                return [4 /*yield*/, ticket.save()];
+            case 2:
+                _a.sent();
+                res.status(200).json(ticket);
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                console.log(error_1);
+                res.status(500).json({ msg: "ERROR_SERVIDOR" });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.createTicket = createTicket;
+//# sourceMappingURL=tickets.js.map

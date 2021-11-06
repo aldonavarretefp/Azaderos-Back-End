@@ -1,6 +1,5 @@
-const Role = require('../models/role');
-const { Cliente } = require('../models');
 
+import Historial from '../models/historiale';
 // const esRoleValido = async(rol = '') => {
 
 //     const existeRol = await Role.findOne({ rol });
@@ -18,14 +17,14 @@ const { Cliente } = require('../models');
 //     }
 // }
 
-// const existeUsuarioPorId = async( id ) => {
+export const existeHistorialporId = async( id:string ) => {
 
-//     // Verificar si el correo existe
-//     const existeUsuario = await Usuario.findById(id);
-//     if ( !existeUsuario ) {
-//         throw new Error(`El id no existe ${ id }`);
-//     }
-// }
+    // Verificar si el correo existe
+    const existeHistorial = await Historial.findById(id);
+    if ( !existeHistorial ) {
+        throw new Error(`El id no existe ${ id }`);
+    }
+}
 
 /**
  * Categorias
@@ -54,7 +53,7 @@ const { Cliente } = require('../models');
 /**
  * Validar colecciones permitidas
  */
-const coleccionesPermitidas = ( coleccion:string = '', colecciones:string[] = []) => {
+export const coleccionesPermitidas = ( coleccion:string = '', colecciones:string[] = []) => {
 
     const incluida = colecciones.includes( coleccion );
     if ( !incluida ) {
@@ -62,14 +61,3 @@ const coleccionesPermitidas = ( coleccion:string = '', colecciones:string[] = []
     }
     return true;
 }
-
-
-module.exports = {
-    // esRoleValido,
-    // emailExiste,
-    // existeUsuarioPorId,
-    // existeCategoriaPorId,
-    // existeProductoPorId,
-    coleccionesPermitidas
-}
-

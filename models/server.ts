@@ -24,6 +24,7 @@ class Server {
 
             clientes:    '/api/clientes',
             historiales:    '/api/historiales',
+            tickets:    '/api/tickets',
             uploads:    '/api/uploads',
         }
 
@@ -61,6 +62,7 @@ class Server {
         this.app.use(this.paths.clientes,require("../routes/clientes"));
         this.app.use(this.paths.historiales,require("../routes/historiales"));
         this.app.use(this.paths.uploads,require("../routes/uploads"));
+        this.app.use(this.paths.tickets,require("../routes/tickets"));
     }
     listen(){
         this.app.listen(this.port,()=>{

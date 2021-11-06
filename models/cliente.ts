@@ -32,8 +32,10 @@ const clienteSchema = new Schema({
     google: {
         type: Boolean,
         default:false,
+    },
+    ubicacion:{
+        type: String,
     }
-    
     
 });
 
