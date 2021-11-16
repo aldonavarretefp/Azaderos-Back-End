@@ -13,8 +13,9 @@ const getClientes = async (req:Request, res:Response)=> {
 
     const [clientes,total] = await Promise.all([
         Cliente.find(condition)
-                .limit(Number(limite))
-                .skip(Number(desde)),
+                // .limit(Number(limite))
+                // .skip(Number(desde)),
+                ,
         Cliente.countDocuments(condition)
     ]);
     res.status(200).json({
