@@ -4,18 +4,10 @@ import Cliente from '../models/cliente';
 
 const getClientes = async (req:Request, res:Response)=> {
     
-    const {limite = 100,desde = 0} = req.query;
     const condition = {estado:true};
-    if (Number(desde)>=Number(limite)) {
-        res.json({msg:"SINTAXIS_INVALIDA"})
-        return
-    };
 
     const [clientes,total] = await Promise.all([
-        Cliente.find(condition)
-                // .limit(Number(limite))
-                // .skip(Number(desde)),
-                ,
+        Cliente.find(condition).sort({_id:-1}),
         Cliente.countDocuments(condition)
     ]);
     res.status(200).json({

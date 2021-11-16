@@ -63,25 +63,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var cliente_1 = __importDefault(require("../models/cliente"));
 var getClientes = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, limite, _c, desde, condition, _d, clientes, total;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var condition, _a, clientes, total;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a = req.query, _b = _a.limite, limite = _b === void 0 ? 5 : _b, _c = _a.desde, desde = _c === void 0 ? 0 : _c;
                 condition = { estado: true };
-                if (Number(desde) >= Number(limite)) {
-                    res.json({ msg: "SINTAXIS_INVALIDA" });
-                    return [2 /*return*/];
-                }
-                ;
                 return [4 /*yield*/, Promise.all([
-                        cliente_1.default.find(condition)
-                            .limit(Number(limite))
-                            .skip(Number(desde)),
+                        cliente_1.default.find(condition).sort({ _id: -1 }),
                         cliente_1.default.countDocuments(condition)
                     ])];
             case 1:
-                _d = _e.sent(), clientes = _d[0], total = _d[1];
+                _a = _b.sent(), clientes = _a[0], total = _a[1];
                 res.status(200).json({
                     total: total,
                     clientes: clientes
