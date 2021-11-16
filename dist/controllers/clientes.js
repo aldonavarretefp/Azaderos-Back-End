@@ -117,12 +117,12 @@ var getCliente = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 var postCliente = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, nombre, telefono, cliente;
+    var _a, nombre, sobrenombre, telefono, direccion, referencias, cliente;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, nombre = _a.nombre, telefono = _a.telefono;
-                cliente = new cliente_1.default({ nombre: nombre, telefono: telefono });
+                _a = req.body, nombre = _a.nombre, sobrenombre = _a.sobrenombre, telefono = _a.telefono, direccion = _a.direccion, referencias = _a.referencias;
+                cliente = new cliente_1.default({ nombre: nombre, telefono: telefono, direccion: direccion, referencias: referencias, sobrenombre: sobrenombre });
                 return [4 /*yield*/, cliente.save()];
             case 1:
                 _b.sent();
@@ -143,6 +143,9 @@ var putCliente = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 return [4 /*yield*/, cliente_1.default.findByIdAndUpdate(id, __assign(__assign({}, restoCliente), { estado: true }))];
             case 1:
                 cliente = _b.sent();
+                return [4 /*yield*/, cliente.save()];
+            case 2:
+                _b.sent();
                 res.status(200).json({
                     cliente: cliente
                 });

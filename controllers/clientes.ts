@@ -4,7 +4,7 @@ import Cliente from '../models/cliente';
 
 const getClientes = async (req:Request, res:Response)=> {
     
-    const {limite = 5,desde = 0} = req.query;
+    const {limite = 100,desde = 0} = req.query;
     const condition = {estado:true};
     if (Number(desde)>=Number(limite)) {
         res.json({msg:"SINTAXIS_INVALIDA"})
@@ -37,8 +37,8 @@ const getCliente = async (req:Request, res:Response) => {
     }
 }
 const postCliente = async (req: Request, res: Response)=> {
-    const {nombre,telefono} = req.body;
-    const cliente  = new Cliente({nombre,telefono});
+    const {nombre,sobrenombre,telefono,direccion,referencias} = req.body;
+    const cliente  = new Cliente({nombre,telefono,direccion,referencias,sobrenombre});
     await cliente.save();
     res.json({
         cliente
@@ -53,6 +53,7 @@ const putCliente = async (req:Request, res: Response)=> {
         ...restoCliente,
         estado:true
     });
+    await cliente.save();
     res.status(200).json({
         cliente
     });

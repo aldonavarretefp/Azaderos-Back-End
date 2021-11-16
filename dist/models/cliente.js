@@ -15,11 +15,11 @@ var mongoose_1 = require("mongoose");
 var clienteSchema = new mongoose_1.Schema({
     nombre: {
         type: String,
-        required: [true, "Nombre obligatorio"]
+        default: "Sin_nombre",
     },
     telefono: {
         type: String,
-        required: [true, "Telefono obligatorio"]
+        default: "Sin_telefono"
     },
     sobrenombre: {
         type: String
