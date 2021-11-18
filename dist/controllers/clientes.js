@@ -109,12 +109,12 @@ var getCliente = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 var postCliente = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, nombre, sobrenombre, telefono, direccion, referencias, cliente;
+    var _a, nombre, sobrenombre, telefono, direccion, referencias, ubicacion, cliente;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, nombre = _a.nombre, sobrenombre = _a.sobrenombre, telefono = _a.telefono, direccion = _a.direccion, referencias = _a.referencias;
-                cliente = new cliente_1.default({ nombre: nombre, telefono: telefono, direccion: direccion, referencias: referencias, sobrenombre: sobrenombre });
+                _a = req.body, nombre = _a.nombre, sobrenombre = _a.sobrenombre, telefono = _a.telefono, direccion = _a.direccion, referencias = _a.referencias, ubicacion = _a.ubicacion;
+                cliente = new cliente_1.default({ nombre: nombre, telefono: telefono, direccion: direccion, referencias: referencias, sobrenombre: sobrenombre, ubicacion: ubicacion });
                 return [4 /*yield*/, cliente.save()];
             case 1:
                 _b.sent();
