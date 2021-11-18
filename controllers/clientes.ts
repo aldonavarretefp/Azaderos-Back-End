@@ -30,8 +30,8 @@ const getCliente = async (req:Request, res:Response) => {
     }
 }
 const postCliente = async (req: Request, res: Response)=> {
-    const {nombre,sobrenombre,telefono,direccion,referencias} = req.body;
-    const cliente  = new Cliente({nombre,telefono,direccion,referencias,sobrenombre});
+    const {nombre,sobrenombre,telefono,direccion,referencias,ubicacion} = req.body;
+    const cliente  = new Cliente({nombre,telefono,direccion,referencias,sobrenombre,ubicacion});
     await cliente.save();
     res.json({
         cliente
