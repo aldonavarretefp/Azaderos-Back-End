@@ -1,13 +1,14 @@
 import {Router,Request,Response} from 'express';
 import {body,check} from 'express-validator';
+import { existeTelefono } from '../helpers/db-validators';
+import validarCampos from '../middlewares/validar-campos';
 const router = Router();
 
-
-import Cliente from '../models/cliente';
 const {getClientes,getCliente, postCliente,putCliente, delCliente} = require('../controllers/clientes');
+
+
 // const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
 // const { esRoleValido, existeEmail, existeUsuarioporId } = require('../helpers/db-validators');
-// const { validarCampos } = require('../middlewares/validar-campos');
 
 //Endpoints:
 //Obtener info
@@ -43,9 +44,10 @@ router.get('/',getClientes);
 router.get('/:id', getCliente);
 
 router.post('/',[
-    body('nombre','NOMBRE ES OBLIGATORIO').not().isEmpty(),
-    body('telefono','TELEFONO ES OBLIGATORIO').not().isEmpty(),
-    body('direccion','DIRECCION ES OBLIGATORIO').not().isEmpty(),
+    // body('nombre','NOMBRE ES OBLIGATORIO').not().isEmpty(),
+    // body('telefono','TELEFONO ES OBLIGATORIO').not().isEmpty(),
+    check('telefono').custom(existeTelefono),
+    validarCampos
 ],postCliente);
 
 router.put('/:id',[

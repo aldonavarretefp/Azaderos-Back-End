@@ -19,8 +19,7 @@ var clienteSchema = new mongoose_1.Schema({
     },
     telefono: {
         type: String,
-        default: "Sin_telefono",
-        unique: true,
+        default: "Sin_telefono"
     },
     sobrenombre: {
         type: String

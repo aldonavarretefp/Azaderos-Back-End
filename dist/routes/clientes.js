@@ -1,12 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var express_validator_1 = require("express-validator");
+var db_validators_1 = require("../helpers/db-validators");
+var validar_campos_1 = __importDefault(require("../middlewares/validar-campos"));
 var router = (0, express_1.Router)();
 var _a = require('../controllers/clientes'), getClientes = _a.getClientes, getCliente = _a.getCliente, postCliente = _a.postCliente, putCliente = _a.putCliente, delCliente = _a.delCliente;
 // const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
 // const { esRoleValido, existeEmail, existeUsuarioporId } = require('../helpers/db-validators');
-// const { validarCampos } = require('../middlewares/validar-campos');
 //Endpoints:
 //Obtener info
 // router.get('/', usuariosGet);
@@ -37,9 +41,10 @@ var _a = require('../controllers/clientes'), getClientes = _a.getClientes, getCl
 router.get('/', getClientes);
 router.get('/:id', getCliente);
 router.post('/', [
-    (0, express_validator_1.body)('nombre', 'NOMBRE ES OBLIGATORIO').not().isEmpty(),
-    (0, express_validator_1.body)('telefono', 'TELEFONO ES OBLIGATORIO').not().isEmpty(),
-    (0, express_validator_1.body)('direccion', 'DIRECCION ES OBLIGATORIO').not().isEmpty(),
+    // body('nombre','NOMBRE ES OBLIGATORIO').not().isEmpty(),
+    // body('telefono','TELEFONO ES OBLIGATORIO').not().isEmpty(),
+    (0, express_validator_1.check)('telefono').custom(db_validators_1.existeTelefono),
+    validar_campos_1.default
 ], postCliente);
 router.put('/:id', [
     (0, express_validator_1.check)('id', 'ID_INVALIDO').isMongoId(),
