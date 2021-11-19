@@ -32,6 +32,8 @@ const getCliente = async (req:Request, res:Response) => {
 const postCliente = async (req: Request, res: Response)=> {
     const {nombre,sobrenombre,telefono,direccion,referencias,ubicacion} = req.body;
     const cliente  = new Cliente({nombre,telefono,direccion,referencias,sobrenombre,ubicacion});
+    // unique index telefono
+    await cliente.createIndex({telefono:1},{unique:true});
     await cliente.save();
     res.json({
         cliente
