@@ -115,8 +115,13 @@ var postCliente = function (req, res) { return __awaiter(void 0, void 0, void 0,
             case 0:
                 _a = req.body, nombre = _a.nombre, sobrenombre = _a.sobrenombre, telefono = _a.telefono, direccion = _a.direccion, referencias = _a.referencias, ubicacion = _a.ubicacion;
                 cliente = new cliente_1.default({ nombre: nombre, telefono: telefono, direccion: direccion, referencias: referencias, sobrenombre: sobrenombre, ubicacion: ubicacion });
-                return [4 /*yield*/, cliente.save()];
+                // unique index telefono
+                return [4 /*yield*/, cliente.createIndex({ telefono: 1 }, { unique: true })];
             case 1:
+                // unique index telefono
+                _b.sent();
+                return [4 /*yield*/, cliente.save()];
+            case 2:
                 _b.sent();
                 res.json({
                     cliente: cliente
