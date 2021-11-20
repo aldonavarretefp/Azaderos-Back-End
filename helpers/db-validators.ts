@@ -30,8 +30,9 @@ export const existeTelefono = async( telefono:string ) => {
 
     // Verificar si el correo existe
     const existeCliente = await Cliente.findOne({ telefono });
-    if (existeCliente ) {
-        throw new Error(`El teléfono ${telefono} ya existe.`);
+    // Si el telefono es diferente de "Sin_telefono"
+    if ( existeCliente && existeCliente.telefono !== "Sin_telefono" ) {
+        throw new Error(`El telefono: ${ telefono }, ya está registrado`);
     }
 }
 
