@@ -77,8 +77,9 @@ var existeTelefono = function (telefono) { return __awaiter(void 0, void 0, void
             case 0: return [4 /*yield*/, cliente_1.default.findOne({ telefono: telefono })];
             case 1:
                 existeCliente = _a.sent();
-                if (existeCliente) {
-                    throw new Error("El tel\u00E9fono " + telefono + " ya existe.");
+                // Si el telefono es diferente de "Sin_telefono"
+                if (existeCliente && existeCliente.telefono !== "Sin_telefono") {
+                    throw new Error("El telefono: " + telefono + ", ya est\u00E1 registrado");
                 }
                 return [2 /*return*/];
         }
