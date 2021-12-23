@@ -1,14 +1,10 @@
 import {Request, Response} from 'express';
-
 import bcrypt from 'bcrypt';
-
-
 
 import Usuario from '../models/usuario';
 
 
-
-const usuariosGet = async (req:Request, res:Response)=> {
+export const usuariosGet = async (req:Request, res:Response)=> {
     const {limite = 5,desde = 0} = req.query;
     const query = {estado:true};
     if (Number(desde)>=Number(limite)) {
@@ -28,23 +24,31 @@ const usuariosGet = async (req:Request, res:Response)=> {
         usuarios
     });
 }
-const usuariosPost = async (req: Request, res: Response)=> {
-    const {nombre,correo, password,rol,google} = req.body;
-    const usuario  = new Usuario({nombre,correo,password,rol,google});
+export const usuariosPost = async (req: Request, res: Response)=> {
+    try{    
+        const {nombre,email, password,rol} = req.body;
+        const usuario  = new Usuario({nombre,email,password,rol});
+        console.log(usuario);
+        // //Encriptar password
+        const salt = bcrypt.genSaltSync(10);
+        usuario.password = bcrypt.hashSync(password, salt);
 
-    //Encriptar password
-    const salt = bcrypt.genSaltSync(10);
-    usuario.password = bcrypt.hashSync(password, salt);
-    //Graba en db
         await usuario.save();
-    res.json({
-        msg: "createdUser",
-        usuario
-    });
+        return res.status(200).json({
+            msg: "Nuevo Usuario:",
+            usuario
+        });
+        
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            msg: "Error al crear usuario",
+        });
+    }
 }
 const usuariosPut = async (req:Request, res: Response)=> {
     const {id} = req.params;
-    const {_id,password,google,correo,...restoUsuario} = req.body;
+    const {_id,password,google,email,...restoUsuario} = req.body;
 
     if (password) {
         const salt = bcrypt.genSaltSync(10);

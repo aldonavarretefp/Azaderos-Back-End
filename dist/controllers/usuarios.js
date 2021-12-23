@@ -50,6 +50,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.usuariosPost = exports.usuariosGet = void 0;
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var usuario_1 = __importDefault(require("../models/usuario"));
 var usuariosGet = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -81,35 +82,44 @@ var usuariosGet = function (req, res) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
+exports.usuariosGet = usuariosGet;
 var usuariosPost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, nombre, correo, password, rol, google, usuario, salt;
+    var _a, nombre, email, password, rol, usuario, salt, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, nombre = _a.nombre, correo = _a.correo, password = _a.password, rol = _a.rol, google = _a.google;
-                usuario = new usuario_1.default({ nombre: nombre, correo: correo, password: password, rol: rol, google: google });
+                _b.trys.push([0, 2, , 3]);
+                _a = req.body, nombre = _a.nombre, email = _a.email, password = _a.password, rol = _a.rol;
+                usuario = new usuario_1.default({ nombre: nombre, email: email, password: password, rol: rol });
+                console.log(usuario);
                 salt = bcrypt_1.default.genSaltSync(10);
                 usuario.password = bcrypt_1.default.hashSync(password, salt);
-                //Graba en db
                 return [4 /*yield*/, usuario.save()];
             case 1:
-                //Graba en db
                 _b.sent();
-                res.json({
-                    msg: "createdUser",
-                    usuario: usuario
+                return [2 /*return*/, res.status(200).json({
+                        msg: "Nuevo Usuario:",
+                        usuario: usuario
+                    })];
+            case 2:
+                e_1 = _b.sent();
+                console.log(e_1);
+                res.status(500).json({
+                    msg: "Error al crear usuario",
                 });
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
+exports.usuariosPost = usuariosPost;
 var usuariosPut = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, _a, _id, password, google, correo, restoUsuario, salt, usuario;
+    var id, _a, _id, password, google, email, restoUsuario, salt, usuario;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 id = req.params.id;
-                _a = req.body, _id = _a._id, password = _a.password, google = _a.google, correo = _a.correo, restoUsuario = __rest(_a, ["_id", "password", "google", "correo"]);
+                _a = req.body, _id = _a._id, password = _a.password, google = _a.google, email = _a.email, restoUsuario = __rest(_a, ["_id", "password", "google", "email"]);
                 if (password) {
                     salt = bcrypt_1.default.genSaltSync(10);
                     restoUsuario.password = bcrypt_1.default.hashSync(password, salt);
@@ -158,8 +168,8 @@ var usuariosDelete = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 module.exports = {
-    usuariosGet: usuariosGet,
-    usuariosPost: usuariosPost,
+    usuariosGet: exports.usuariosGet,
+    usuariosPost: exports.usuariosPost,
     usuariosPatch: usuariosPatch,
     usuariosPut: usuariosPut,
     usuariosDelete: usuariosDelete

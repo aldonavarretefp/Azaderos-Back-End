@@ -17,10 +17,9 @@ var usuarioSchema = new mongoose_1.Schema({
         type: String,
         required: [true, "Nombre obligatorio"]
     },
-    correo: {
+    email: {
         type: String,
         required: [true, "Correo obligatorio"],
-        unique: true,
     },
     password: {
         type: String,
@@ -31,7 +30,6 @@ var usuarioSchema = new mongoose_1.Schema({
     },
     rol: {
         type: String,
-        required: true,
         enum: ['ADMIN_ROLE', 'USER_ROLE']
     },
     estado: {
@@ -40,7 +38,7 @@ var usuarioSchema = new mongoose_1.Schema({
     },
     google: {
         type: Boolean,
-        default: true,
+        default: false,
     }
 });
 usuarioSchema.methods.toJSON = function () {

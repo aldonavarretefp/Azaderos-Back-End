@@ -6,7 +6,6 @@ import fileUpload from 'express-fileupload';
 
 
 class Server {
-    usuariosPath: string;
     port:string|undefined;
     app:express.Application;
     paths:any;
@@ -14,16 +13,14 @@ class Server {
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
         this.paths = {
             auth:       '/api/auth',
             buscar:     '/api/buscar',
             categorias: '/api/categorias',
             productos:  '/api/productos',
             usuarios:   '/api/usuarios',
-
-            clientes:    '/api/clientes',
-            historiales:    '/api/historiales',
+            clientes:   '/api/clientes',
+            historiales:'/api/historiales',
             tickets:    '/api/tickets',
             uploads:    '/api/uploads',
         }
@@ -58,7 +55,8 @@ class Server {
     }
     routes(){
         //Configurando las rutas
-        this.app.use(this.usuariosPath,require("../routes/usuarios"));
+        this.app.use(this.paths.usuarios,require("../routes/usuarios"));
+        this.app.use(this.paths.auth,require("../routes/auth"));
         this.app.use(this.paths.clientes,require("../routes/clientes"));
         this.app.use(this.paths.historiales,require("../routes/historiales"));
         this.app.use(this.paths.uploads,require("../routes/uploads"));
