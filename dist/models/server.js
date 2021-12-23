@@ -48,7 +48,6 @@ var Server = /** @class */ (function () {
     function Server() {
         this.app = (0, express_1.default)();
         this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
         this.paths = {
             auth: '/api/auth',
             buscar: '/api/buscar',
@@ -94,7 +93,8 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.routes = function () {
         //Configurando las rutas
-        this.app.use(this.usuariosPath, require("../routes/usuarios"));
+        this.app.use(this.paths.usuarios, require("../routes/usuarios"));
+        this.app.use(this.paths.auth, require("../routes/auth"));
         this.app.use(this.paths.clientes, require("../routes/clientes"));
         this.app.use(this.paths.historiales, require("../routes/historiales"));
         this.app.use(this.paths.uploads, require("../routes/uploads"));

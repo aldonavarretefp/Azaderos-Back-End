@@ -1,21 +1,25 @@
 
 import Historial from '../models/historiale';
-// const esRoleValido = async(rol = '') => {
+import Role from '../models/role';
+import Usuario from '../models/usuario';
 
-//     const existeRol = await Role.findOne({ rol });
-//     if ( !existeRol ) {
-//         throw new Error(`El rol ${ rol } no está registrado en la BD`);
-//     }
-// }
+export const esRoleValido = async(rol = '') => {
+    const existeRol = await Role.findOne({ rol });
+    if ( !existeRol ) {
+        throw new Error(`El rol ${ rol } no está registrado en la BD`);
+    }
+}
 
-// const emailExiste = async( correo = '' ) => {
+export const existeEmail = async( email = '' ) => {
 
-//     // Verificar si el correo existe
-//     const existeEmail = await Usuario.findOne({ correo });
-//     if ( existeEmail ) {
-//         throw new Error(`El correo: ${ correo }, ya está registrado`);
-//     }
-// }
+    //validar que el email No exista en la BD
+    const existeEmail = await Usuario.findOne({ email, estado: true });
+    console.log(existeEmail);
+    if (existeEmail ) {
+        throw new Error(`El email ${ email } ya está registrado en la BD`);
+    }
+
+}
 
 export const existeHistorialporId = async( id:string ) => {
 

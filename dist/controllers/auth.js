@@ -38,59 +38,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var cloudinary = require('cloudinary').v2;
-cloudinary.config(process.env.CLOUDINARY_URL);
-var cliente_1 = __importDefault(require("../models/cliente"));
-var actualizarImagenCloudinary = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, cliente, nombreArr, nombre, public_id, tempFilePath, secure_url, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.login = void 0;
+var bcrypt = require('bcryptjs');
+var usuario_1 = __importDefault(require("../models/usuario"));
+var generar_jwt_1 = require("../helpers/generar-jwt");
+var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, usuario, validPassword, token, e_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 4, , 5]);
-                id = req.params.id;
-                return [4 /*yield*/, cliente_1.default.findById(id)];
+                _a = req.body, email = _a.email, password = _a.password;
+                console.log(email, password);
+                _b.label = 1;
             case 1:
-                cliente = _a.sent();
-                if (!cliente) {
-                    return [2 /*return*/, res.status(400).json({
-                            msg: "No existe un cliente con el id ".concat(id)
-                        })];
-                }
-                // Limpiar imágenes previas
-                if (cliente.img) {
-                    console.log('si tiene foto');
-                    nombreArr = cliente.img.split('/');
-                    nombre = nombreArr[nombreArr.length - 1];
-                    public_id = nombre.split('.')[0];
-                    console.log(public_id);
-                    cloudinary.uploader.destroy("sea-turtle", {
-                        resource_type: 'video',
-                        folder: 'samples',
-                    }, function (error, result) {
-                        console.log(result, error);
-                    });
-                }
-                tempFilePath = req.files.archivo.tempFilePath;
-                return [4 /*yield*/, cloudinary.uploader.upload(tempFilePath, { folder: 'Azaderos/Domicilios' })];
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, usuario_1.default.findOne({ email: email })];
             case 2:
-                secure_url = (_a.sent()).secure_url;
-                cliente.img = secure_url;
-                return [4 /*yield*/, cliente.save()];
+                usuario = _b.sent();
+                if (!usuario) {
+                    return [2 /*return*/, res.status(404).json({ msg: 'El usuario/contraseña no existe.' })];
+                }
+                if (!usuario.estado) {
+                    return [2 /*return*/, res.status(404).json({ msg: 'El usuario ha sido eliminado de la base de datos.' })];
+                }
+                validPassword = bcrypt.compareSync(password, usuario.password);
+                if (!validPassword) {
+                    return [2 /*return*/, res.status(404).json({ msg: 'Contraseña incorrecta.' })];
+                }
+                return [4 /*yield*/, (0, generar_jwt_1.generarJWT)(usuario.id, usuario.nombre)];
             case 3:
-                _a.sent();
-                res.json(cliente);
-                return [3 /*break*/, 5];
+                token = _b.sent();
+                return [2 /*return*/, res.status(200).json({
+                        msg: "Bienvenido ".concat(usuario.nombre, "."),
+                        token: token
+                    })];
             case 4:
-                error_1 = _a.sent();
-                res.status(500).json({
-                    msg: 'Error al actualizar la imagen',
-                });
-                return [3 /*break*/, 5];
+                e_1 = _b.sent();
+                console.log("error al logearse");
+                return [2 /*return*/, res.status(500).json({
+                        msg: 'Error al logearse.',
+                        error: e_1
+                    })];
             case 5: return [2 /*return*/];
         }
     });
 }); };
-module.exports = module.exports = {
-    actualizarImagenCloudinary: actualizarImagenCloudinary
-};
-//# sourceMappingURL=uploads.js.map
+exports.login = login;
+//# sourceMappingURL=auth.js.map

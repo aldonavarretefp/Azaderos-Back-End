@@ -39,21 +39,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.coleccionesPermitidas = exports.existeHistorialporId = void 0;
+exports.coleccionesPermitidas = exports.existeHistorialporId = exports.existeEmail = exports.esRoleValido = void 0;
 var historiale_1 = __importDefault(require("../models/historiale"));
-// const esRoleValido = async(rol = '') => {
-//     const existeRol = await Role.findOne({ rol });
-//     if ( !existeRol ) {
-//         throw new Error(`El rol ${ rol } no está registrado en la BD`);
-//     }
-// }
-// const emailExiste = async( correo = '' ) => {
-//     // Verificar si el correo existe
-//     const existeEmail = await Usuario.findOne({ correo });
-//     if ( existeEmail ) {
-//         throw new Error(`El correo: ${ correo }, ya está registrado`);
-//     }
-// }
+var role_1 = __importDefault(require("../models/role"));
+var usuario_1 = __importDefault(require("../models/usuario"));
+var esRoleValido = function (rol) {
+    if (rol === void 0) { rol = ''; }
+    return __awaiter(void 0, void 0, void 0, function () {
+        var existeRol;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, role_1.default.findOne({ rol: rol })];
+                case 1:
+                    existeRol = _a.sent();
+                    if (!existeRol) {
+                        throw new Error("El rol ".concat(rol, " no est\u00E1 registrado en la BD"));
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+};
+exports.esRoleValido = esRoleValido;
+var existeEmail = function (email) {
+    if (email === void 0) { email = ''; }
+    return __awaiter(void 0, void 0, void 0, function () {
+        var existeEmail;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, usuario_1.default.findOne({ email: email, estado: true })];
+                case 1:
+                    existeEmail = _a.sent();
+                    console.log(existeEmail);
+                    if (existeEmail) {
+                        throw new Error("El email ".concat(email, " ya est\u00E1 registrado en la BD"));
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+};
+exports.existeEmail = existeEmail;
 var existeHistorialporId = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var existeHistorial;
     return __generator(this, function (_a) {

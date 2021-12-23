@@ -33,11 +33,10 @@ var clienteSchema = new mongoose_1.Schema({
         type: String,
     },
     referencias: {
-        type: String,
+        type: String
     },
     correo: {
-        type: String,
-        unique: true,
+        type: String
     },
     img: {
         type: String
