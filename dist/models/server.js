@@ -103,7 +103,7 @@ var Server = /** @class */ (function () {
     Server.prototype.listen = function () {
         var _this = this;
         this.app.listen(this.port, function () {
-            console.log("Escuchando en http://localhost:" + _this.port);
+            console.log("Escuchando en http://localhost:".concat(_this.port));
         });
     };
     return Server;

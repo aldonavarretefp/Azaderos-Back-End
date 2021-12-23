@@ -62,7 +62,7 @@ var existeHistorialporId = function (id) { return __awaiter(void 0, void 0, void
             case 1:
                 existeHistorial = _a.sent();
                 if (!existeHistorial) {
-                    throw new Error("El id no existe " + id);
+                    throw new Error("El id no existe ".concat(id));
                 }
                 return [2 /*return*/];
         }
@@ -97,7 +97,7 @@ var coleccionesPermitidas = function (coleccion, colecciones) {
     if (colecciones === void 0) { colecciones = []; }
     var incluida = colecciones.includes(coleccion);
     if (!incluida) {
-        throw new Error("La colecci\u00F3n " + coleccion + " no es permitida, " + colecciones);
+        throw new Error("La colecci\u00F3n ".concat(coleccion, " no es permitida, ").concat(colecciones));
     }
     return true;
 };
