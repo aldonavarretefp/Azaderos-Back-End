@@ -4,18 +4,12 @@ import { existeTelefono } from '../helpers/db-validators';
 import validarCampos from '../middlewares/validar-campos';
 const router = Router();
 
-<<<<<<< HEAD
-
 import Cliente from '../models/cliente';
 import { validarJWT } from '../middlewares/validar-jwt';
 const {getClientes,getCliente, postCliente,putCliente, delCliente} = require('../controllers/clientes');
-=======
-const {getClientes,getCliente, postCliente,putCliente, delCliente} = require('../controllers/clientes');
-
 
 // const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
 // const { esRoleValido, existeEmail, existeUsuarioporId } = require('../helpers/db-validators');
->>>>>>> 18d889d9d5b2ce5b1b0fe1c3ab469680a02d32a0
 
 
 router.get('/',[
