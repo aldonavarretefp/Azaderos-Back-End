@@ -39,7 +39,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.coleccionesPermitidas = exports.existeHistorialporId = exports.existeEmail = exports.esRoleValido = void 0;
+=======
+exports.coleccionesPermitidas = exports.existeTelefono = exports.existeHistorialporId = void 0;
+var cliente_1 = __importDefault(require("../models/cliente"));
+>>>>>>> 18d889d9d5b2ce5b1b0fe1c3ab469680a02d32a0
 var historiale_1 = __importDefault(require("../models/historiale"));
 var role_1 = __importDefault(require("../models/role"));
 var usuario_1 = __importDefault(require("../models/usuario"));
@@ -95,6 +100,22 @@ var existeHistorialporId = function (id) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.existeHistorialporId = existeHistorialporId;
+var existeTelefono = function (telefono) { return __awaiter(void 0, void 0, void 0, function () {
+    var existeCliente;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, cliente_1.default.findOne({ telefono: telefono })];
+            case 1:
+                existeCliente = _a.sent();
+                // Si el telefono es diferente de "Sin_telefono"
+                if (existeCliente && existeCliente.telefono !== "Sin_telefono") {
+                    throw new Error("El telefono: " + telefono + ", ya est\u00E1 registrado");
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.existeTelefono = existeTelefono;
 /**
  * Categorias
  */

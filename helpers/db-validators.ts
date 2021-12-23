@@ -1,4 +1,4 @@
-
+import Cliente from '../models/cliente';
 import Historial from '../models/historiale';
 import Role from '../models/role';
 import Usuario from '../models/usuario';
@@ -29,6 +29,17 @@ export const existeHistorialporId = async( id:string ) => {
         throw new Error(`El id no existe ${ id }`);
     }
 }
+
+export const existeTelefono = async( telefono:string ) => {
+
+    // Verificar si el correo existe
+    const existeCliente = await Cliente.findOne({ telefono });
+    // Si el telefono es diferente de "Sin_telefono"
+    if ( existeCliente && existeCliente.telefono !== "Sin_telefono" ) {
+        throw new Error(`El telefono: ${ telefono }, ya está registrado`);
+    }
+}
+
 
 /**
  * Categorias

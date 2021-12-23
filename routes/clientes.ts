@@ -1,11 +1,21 @@
 import {Router,Request,Response} from 'express';
 import {body,check} from 'express-validator';
+import { existeTelefono } from '../helpers/db-validators';
+import validarCampos from '../middlewares/validar-campos';
 const router = Router();
 
+<<<<<<< HEAD
 
 import Cliente from '../models/cliente';
 import { validarJWT } from '../middlewares/validar-jwt';
 const {getClientes,getCliente, postCliente,putCliente, delCliente} = require('../controllers/clientes');
+=======
+const {getClientes,getCliente, postCliente,putCliente, delCliente} = require('../controllers/clientes');
+
+
+// const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/usuarios');
+// const { esRoleValido, existeEmail, existeUsuarioporId } = require('../helpers/db-validators');
+>>>>>>> 18d889d9d5b2ce5b1b0fe1c3ab469680a02d32a0
 
 
 router.get('/',[
@@ -16,9 +26,10 @@ router.get('/',[
 router.get('/:id', getCliente);
 
 router.post('/',[
-    body('nombre','NOMBRE ES OBLIGATORIO').not().isEmpty(),
-    body('telefono','TELEFONO ES OBLIGATORIO').not().isEmpty(),
-    body('direccion','DIRECCION ES OBLIGATORIO').not().isEmpty(),
+    // body('nombre','NOMBRE ES OBLIGATORIO').not().isEmpty(),
+    // body('telefono','TELEFONO ES OBLIGATORIO').not().isEmpty(),
+    check('telefono').custom(existeTelefono),
+    validarCampos
 ],postCliente);
 
 router.put('/:id',[
